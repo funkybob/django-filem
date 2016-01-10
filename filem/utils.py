@@ -30,7 +30,7 @@ def dir_tree(root):
     '''
     Recursively produces a tree of directory info.
     '''
-    return [
+    return sorted([
         {
             'name': p.name,
             'path': str(p.relative_to(ROOT)),
@@ -38,7 +38,7 @@ def dir_tree(root):
         }
         for p in root.iterdir()
         if p.is_dir()
-    ]
+    ], key=lambda x: x['name'])
 
 
 def file_details(path):
@@ -49,15 +49,21 @@ def file_details(path):
     content_type, encoding = mimetypes.guess_type(path.name)
 
     if path.is_dir():
-        img = static('filem/img/dir.png')
-    elif content_type and content_type.startswith('image/'):
+        img = static('filem/img/mimetypes/inode-directory.png')
+        content_type = 'inode/directory'
+    elif content_type is None:
+        img = static('filem/img/mimetypes/unknown.png')
+    elif content_type.startswith('image/'):
         tf = Thumbnailer(name=str(path.relative_to(ROOT)))
         img = tf.get_thumbnail({
-            'size': (60, 60),
+            'size': (64, 64),
             'crop': 'auto',
         }).url
     else:
-        img = static('filem/img/file.png')
+        try:
+            img = static('filem/img/mimetypes/%s.png' % (content_type.replace('/', '-'),))
+        except:
+            img = static('filem/img/mimetypes/unknown.png')
     return {
         'name': path.name,
         'is_dir': path.is_dir(),
