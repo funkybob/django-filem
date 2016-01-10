@@ -1,0 +1,38 @@
+* { box-model: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+body {
+    display: flex;
+}
+
+nav {
+    flex: 0 0 300px;
+}
+
+main {
+    flex: 1 1 auto;
+}
+
+main > ul {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: stretch;
+    align-content: flex-start;
+}
+
+main > ul li {
+    list-style: none;
+    text-align: center;
+    flex: 0 0 150px;
+    height: 150px;
+    background-color: #ccc;
+    border-radius: 5px;
+}
