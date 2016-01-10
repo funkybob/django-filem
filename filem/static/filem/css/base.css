@@ -5,6 +5,10 @@ html, body {
     padding: 0;
 }
 
+body {
+    padding: 5px;
+}
+
 main {
     display: flex;
 }
