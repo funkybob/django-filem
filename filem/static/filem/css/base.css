@@ -4,19 +4,25 @@ html, body {
     margin: 0;
     padding: 0;
 }
-body {
+
+main {
     display: flex;
+}
+
+header {
+    height: 2em;
+    font-size: larger;
 }
 
 nav {
     flex: 0 0 300px;
 }
 
-main {
-    flex: 1 1 auto;
+section {
+    flex: 1 1 100%;
 }
 
-main > ul {
+section > ul {
     margin: 0;
     padding: 0;
     height: 100%;
@@ -28,7 +34,7 @@ main > ul {
     align-content: flex-start;
 }
 
-main > ul li {
+section > ul li {
     list-style: none;
     text-align: center;
     flex: 0 0 120px;
@@ -52,4 +58,8 @@ nav li > ul {
 
 nav li.open > ul {
     display: block;
+}
+
+nav li.current {
+    font-weight: bold;
 }

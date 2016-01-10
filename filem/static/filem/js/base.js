@@ -18,7 +18,7 @@ function render_tree(nodelist) {
 }
 
 function render_dir_tree(data) {
-    var tree = document.querySelector('body > nav');
+    var tree = document.querySelector('nav');
     var content = '<ul class="open">';
     content += render_tree(data.tree, true);
     content += '</ul>';
@@ -30,9 +30,10 @@ function render_dir_tree(data) {
 ** Update the open class on tree nodes for current path
 */
 function preen_tree() {
-    var nodes = document.querySelectorAll('body > nav li');
+    var nodes = document.querySelectorAll('nav li');
     for(var i=0, l=nodes.length; i < l ; i++) {
         var el = nodes.item(i);
+        el.classList[(current_path === el.dataset['path']) ? 'add' : 'remove']('current');
         if(current_path !== '' && current_path.startsWith(el.dataset['path'])) {
             el.classList.add('open');
         } else {
@@ -42,7 +43,7 @@ function preen_tree() {
 }
 
 function render_file_list(data) {
-    var main = document.querySelector('main');
+    var main = document.querySelector('section');
     var c = '<ul>';
     data.files.forEach(function (node) {
         c += '<li data-name="' + node.name + '" data-type="' + node['content-type'] + '">' + 
@@ -56,15 +57,20 @@ function render_file_list(data) {
 
 function set_current_path(path) {
     if(path == current_path) { return; }
+    history.pushState({}, '', '#' + path);
     current_path = path;
+    document.querySelector('body > header').innerHTML = current_path;
     preen_tree();
     fetch('files/' + path, {credentials: 'same-origin'}).then(json).then(render_file_list);
 }
 
 $(function () {
     fetch('tree/', {credentials: 'same-origin'}).then(json).then(render_dir_tree);
-    set_current_path('');
+    set_current_path(document.location.hash.substr(1));
     $('nav').on('dblclick', 'li', function (el) {
         set_current_path(this.dataset['path']);
     });
+    window.onpopstate = function () {
+        set_current_path(document.location.hash.substr(1));
+    };
 });
