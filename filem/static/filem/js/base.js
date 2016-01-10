@@ -44,7 +44,7 @@ function preen_tree() {
 
 function render_file_list(data) {
     var main = document.querySelector('section');
-    var c = '<ul>';
+    var c = '<ul data-path="' + data.path + '">';
     data.files.forEach(function (node) {
         c += '<li data-name="' + node.name + '" data-type="' + node['content-type'] + '">' + 
                 '<img src="' + node.thumb + '">' +
