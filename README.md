@@ -39,7 +39,9 @@ A simple media file manager for Django
   THUMBNAIL_BASEDIR = 'thumbs'
   ```
 
-4. Log in and visit the page.
+4. Add the 64x64/mimetypes images from https://github.com/pasnox/oxygen-icons-png to static/filem/img/mimetypes
+
+5. Log in and visit the page.
 
 ## Current features
 
