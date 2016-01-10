@@ -24,7 +24,7 @@ def dir_info(request, path=''):
         'path': str(full_path.relative_to(utils.ROOT)),
         'files': [
             utils.file_details(path)
-            for path in full_path.iterdir()
+            for path in sorted(full_path.iterdir())
         ]
     })
 
