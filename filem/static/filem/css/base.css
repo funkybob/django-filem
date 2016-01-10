@@ -14,19 +14,20 @@ main {
 }
 
 header {
+    text-align: center;
     height: 2em;
     font-size: larger;
 }
 
-nav {
+#tree {
     flex: 0 0 300px;
 }
 
-section {
+#files {
     flex: 1 1 100%;
 }
 
-section > ul {
+#files > ul {
     margin: 0;
     padding: 0;
     height: 100%;
@@ -37,7 +38,7 @@ section > ul {
     align-content: flex-start;
 }
 
-section > ul li {
+#files > ul li {
     list-style: none;
     text-align: center;
     flex: 0 0 120px;
@@ -48,21 +49,29 @@ section > ul li {
     padding: 5px;
 }
 
-nav ul {
+#tree ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-nav li > ul {
+#tree li {
+    font-weight: normal;
+}
+
+#tree li > ul {
     display: none;
     padding-left: 2em;
 }
 
-nav li.open > ul {
+#tree li.open > ul {
     display: block;
 }
 
-nav li.current {
+#tree li.current {
     font-weight: bold;
+}
+
+aside {
+    visibility: hidden;
 }
