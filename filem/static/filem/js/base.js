@@ -1,0 +1,70 @@
+var current_path;
+
+function json (response) { return response.json(); }
+
+function render_tree(nodelist) {
+    var c = '';
+    nodelist.forEach(function (node) {
+        var is_open = node.path.startsWith(current_path);
+        c += '<li data-path="' + node.path + '"><span>' + node.name + '</span>';
+        if(node.children.length > 0) {
+            c += '<ul>';
+            c += render_tree(node.children);
+            c += '</ul>';
+        }
+        c += '</li>';
+    });
+    return c;
+}
+
+function render_dir_tree(data) {
+    var tree = document.querySelector('body > nav');
+    var content = '<ul class="open">';
+    content += render_tree(data.tree, true);
+    content += '</ul>';
+    tree.innerHTML = content;
+    preen_tree();
+}
+
+/*
+** Update the open class on tree nodes for current path
+*/
+function preen_tree() {
+    var nodes = document.querySelectorAll('body > nav li');
+    for(var i=0, l=nodes.length; i < l ; i++) {
+        var el = nodes.item(i);
+        if(current_path !== '' && current_path.startsWith(el.dataset['path'])) {
+            el.classList.add('open');
+        } else {
+            el.classList.remove('open');
+        }
+    }
+}
+
+function render_file_list(data) {
+    var main = document.querySelector('main');
+    var c = '<ul>';
+    data.files.forEach(function (node) {
+        c += '<li data-name="' + node.name + '" data-type="' + node['content-type'] + '">' + 
+                '<img src="' + node.thumb + '">' +
+                '<p>' + node.name + '</p>' +
+            '</li>';
+    });
+    c += '</ul>';
+    main.innerHTML = c;
+}
+
+function set_current_path(path) {
+    if(path == current_path) { return; }
+    current_path = path;
+    preen_tree();
+    fetch('files/' + path, {credentials: 'same-origin'}).then(json).then(render_file_list);
+}
+
+$(function () {
+    fetch('tree/', {credentials: 'same-origin'}).then(json).then(render_dir_tree);
+    set_current_path('');
+    $('nav').on('dblclick', 'li', function (el) {
+        set_current_path(this.dataset['path']);
+    });
+});
