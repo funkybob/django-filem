@@ -1,4 +1,4 @@
-* { box-model: border-box; }
+* { box-sizing: border-box; }
 
 html, body {
     margin: 0;
@@ -31,11 +31,12 @@ main > ul {
 main > ul li {
     list-style: none;
     text-align: center;
-    flex: 0 0 150px;
-    height: 150px;
+    flex: 0 0 120px;
+    height: 110px;
     background-color: #ccc;
     border-radius: 5px;
     margin: 5px;
+    padding: 5px;
 }
 
 nav ul {
