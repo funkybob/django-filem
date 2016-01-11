@@ -1,6 +1,8 @@
 # django-filem
 A simple media file manager for Django
 
+NOTE: Requires Python 3.4 or later
+
 ## Quick Install
 
 1. Install requirements
@@ -20,15 +22,6 @@ A simple media file manager for Django
   ]
   ```
 
-2. Add to urls:
-
-  ```
-  urlpatterns = [
-      url(r'^admin/', admin.site.urls),
-      url(r'^_/', include('filem.urls')),
-  ]
-  ```
-
 3. Set your MEDIA settings:
 
   ```
@@ -39,9 +32,18 @@ A simple media file manager for Django
   THUMBNAIL_BASEDIR = 'thumbs'
   ```
 
-4. Add the 64x64/mimetypes images from https://github.com/pasnox/oxygen-icons-png to static/filem/img/mimetypes
+4. Add to urls:
 
-5. Log in and visit the page.
+  ```
+  urlpatterns = [
+      url(r'^admin/', admin.site.urls),
+      url(r'^_/', include('filem.urls')),
+  ]
+  ```
+
+5. Add the 64x64/mimetypes images from https://github.com/pasnox/oxygen-icons-png to static/filem/img/mimetypes
+
+6. Log in and visit the page.
 
 ## Current features
 
