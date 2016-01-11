@@ -58,6 +58,7 @@ def file_details(path):
         img = tf.get_thumbnail({
             'size': (64, 64),
             'crop': 'auto',
+            'upscale': True,
         }).url
     else:
         try:
