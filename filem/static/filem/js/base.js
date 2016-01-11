@@ -68,8 +68,11 @@ function set_current_path(path) {
 $(function () {
     fetch('tree/', {credentials: 'same-origin'}).then(json).then(render_dir_tree);
     set_current_path(document.location.hash.substr(1));
-    $('nav').on('dblclick', 'li', function (ev) {
+    $('#tree').on('dblclick', 'li', function (ev) {
         set_current_path(this.dataset['path']);
+    });
+    $('#files').on('dblclick', "li[data-type='inode/directory']", function (ev) {
+        set_current_path(this.parentElement.dataset['path'] + '/' + this.dataset['name']);
     });
     window.onpopstate = function () {
         set_current_path(document.location.hash.substr(1));
