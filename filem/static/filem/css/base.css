@@ -27,6 +27,11 @@ header {
     flex: 1 1 100%;
 }
 
+#files p {
+    font-size: small;
+    margin: 0;
+}
+
 #files > ul {
     margin: 0;
     padding: 0;
@@ -47,6 +52,7 @@ header {
     border-radius: 5px;
     margin: 5px;
     padding: 5px;
+    overflow: hidden;
 }
 
 #tree ul {
