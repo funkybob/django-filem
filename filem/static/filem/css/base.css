@@ -55,6 +55,10 @@ header {
     overflow: hidden;
 }
 
+#tree span {
+    -webkit-user-select: none;
+}
+
 #tree ul {
     list-style: none;
     margin: 0;
@@ -76,6 +80,13 @@ header {
 
 #tree li.current {
     font-weight: bold;
+}
+
+#tree li span:before {
+    content: '+';
+}
+#tree li.open span:before {
+    content: '-';
 }
 
 aside {

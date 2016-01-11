@@ -6,7 +6,8 @@ function render_tree(nodelist) {
     var c = '';
     nodelist.forEach(function (node) {
         var is_open = node.path.startsWith(current_path);
-        c += '<li data-path="' + node.path + '"><span>' + node.name + '</span>';
+        c += '<li data-path="' + node.path + '">' +
+                '<span>' + node.name + '</span>';
         if(node.children.length > 0) {
             c += '<ul>';
             c += render_tree(node.children);
@@ -67,7 +68,7 @@ function set_current_path(path) {
 $(function () {
     fetch('tree/', {credentials: 'same-origin'}).then(json).then(render_dir_tree);
     set_current_path(document.location.hash.substr(1));
-    $('nav').on('dblclick', 'li', function (el) {
+    $('nav').on('dblclick', 'li', function (ev) {
         set_current_path(this.dataset['path']);
     });
     window.onpopstate = function () {
