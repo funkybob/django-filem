@@ -30,15 +30,18 @@ def dir_tree(root):
     '''
     Recursively produces a tree of directory info.
     '''
-    return sorted([
-        {
-            'name': p.name,
-            'path': str(p.relative_to(ROOT)),
-            'children': dir_tree(p),
-        }
-        for p in root.iterdir()
-        if p.is_dir()
-    ], key=lambda x: x['name'])
+    try:
+        return sorted([
+            {
+                'name': p.name,
+                'path': str(p.relative_to(ROOT)),
+                'children': dir_tree(p),
+            }
+            for p in root.iterdir()
+            if p.is_dir()
+        ], key=lambda x: x['name'])
+    except PermissionError:
+        return []
 
 
 def file_details(path):
