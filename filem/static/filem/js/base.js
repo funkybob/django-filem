@@ -74,13 +74,13 @@ $(function () {
     $('#tree').on('dblclick', 'li', function (ev) {
         set_current_path(this.dataset['path']);
     });
-    $('#tree').on('contextmenu', 'li', function (ev) {
+    $('#tree').on('contextmenu', 'span', function (ev) {
         ev.preventDefault();
-        $('#dir-menu').css({
-            display: 'block',
-            top: ev.pageY,
-            left: ev.pageX
-        });
+        var el = document.querySelector('#dir-menu');
+        el.dataset['target'] = ev.currentTarget.parentNode.dataset['path'];
+        el.style.display = 'block';
+        el.style.left = ev.pageX + 'px';
+        el.style.top = ev.pageY + 'px';
     });
     $('#files').on('dblclick', "li", function (ev) {
         if(this.dataset['type'] == 'inode/directory') {
@@ -91,4 +91,10 @@ $(function () {
     window.onpopstate = function () {
         set_current_path(document.location.hash.substr(1));
     };
+
+    $('#dir-menu').on('click', 'li', function (ev) {
+        var action = this.dataset['action'],
+            // li -> ul -> nav
+            target = this.parentNode.parentNode.dataset['target'];
+    });
 });
