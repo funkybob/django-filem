@@ -7,21 +7,37 @@
         <script src="{% static 'filem/js/base.js' %}"></script>
     </head>
     <body>
-        <header>
-        </header>
         <main>
-            <nav id="tree">
-            </nav>
-            <section id="files">
+            <section id="col1">
+                <nav id="tree"></nav>
+                <div id="dropzone">
+                    <form>
+                        <label>Upload <input type="file" multiple></label>
+                    </form>
+                </div>
+            </section>
+            <section id="col2">
+                <header id="title">Current Path: <span></span></header>
+                <div id="files"></div>
             </section>
         </main>
         <aside>
             <nav id="dir-menu" class="menu">
                 <ul>
+                    <li data-action="info">Info</li>
+                    <li data-action="rename">Rename</li>
+                    <li data-action="create">Add Sub-directory</li>
+                    <li data-action="delete">Delete</li>
+                    <li data-action="download">Download</li>
                 </ul>
             </nav>
             <nav id="file-menu" class="menu">
                 <ul>
+                    <li data-action="info">Info</li>
+                    <li data-action="rename">Rename</li>
+                    <li data-action="download">Download</li>
+                    <li data-action="link">Get URL</li>
+                    <li data-action="delete">Delete</li>
                 </ul>
             </nav>
         </aside>

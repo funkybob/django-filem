@@ -5,26 +5,54 @@ html, body {
     padding: 0;
 }
 
-body {
-    padding: 5px;
-}
+/*
+ * Layout
+ */
 
 main {
+    height: 100vh;
     display: flex;
 }
 
-header {
-    text-align: center;
-    height: 2em;
-    font-size: larger;
+#col1 {
+    flex: 0 0 300px;
+    display: flex;
+    flex-direction: column;
 }
 
 #tree {
-    flex: 0 0 300px;
+    flex: 1 1 auto;
 }
 
+#dropzone {
+    flex: 0 0 10%
+}
+
+#col2 {
+    flex: 1 1 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#title {
+    flex: 0 0 2em;
+}
 #files {
     flex: 1 1 100%;
+    overflow: auto;
+}
+
+/*
+ * Styling
+ */
+#col1, #col2 {
+    padding: 5px;
+}
+
+#title {
+    text-align: center;
+    height: 2em;
+    font-size: larger;
 }
 
 #files p {
@@ -90,5 +118,11 @@ header {
 }
 
 aside {
-    visibility: hidden;
+    display: none;
+}
+
+.menu {
+    position: absolute;
+    width: 100px;
+    height: auto;
 }
