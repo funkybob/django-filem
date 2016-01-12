@@ -117,12 +117,26 @@ main {
     content: '-';
 }
 
-aside {
+aside .menu {
     display: none;
 }
 
 .menu {
     position: absolute;
-    width: 100px;
-    height: auto;
+    border-radius: 5px;
+    background-color: #eee;
+}
+
+.menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li {
+    padding: 5px;
+}
+
+.menu li:hover {
+    background-color: #ccf;
 }
