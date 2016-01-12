@@ -47,7 +47,7 @@ function render_file_list(data) {
     var main = document.querySelector('#files');
     var c = '<ul data-path="' + data.path + '">';
     data.files.forEach(function (node) {
-        c += '<li data-name="' + node.name + '" data-type="' + node['content-type'] + '">' + 
+        c += '<li data-name="' + node.name + '" data-type="' + node['content-type'] + '">' +
                 '<img src="' + node.thumb + '">' +
                 '<p>' + node.name + '</p>' +
             '</li>';
@@ -99,6 +99,14 @@ $(function () {
     $('#files').on('dblclick', "li", function (ev) {
         if(this.dataset['type'] == 'inode/directory') {
             set_current_path(this.parentElement.dataset['path'] + '/' + this.dataset['name']);
+            return;
+        }
+        if(this.dataset['type'].startsWith('image/')) {
+            var path = this.parentElement.dataset['path'] + '/' + this.dataset['name'];
+            var lb = document.querySelector('#lightbox');
+            lb.innerHTML = '<img width="90%" height="90%" src="/media/' + path + '">';
+            lb.style.textAlign = "center";
+            lb.parentNode.style.display = 'flex';
             return;
         }
     });
