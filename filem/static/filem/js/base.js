@@ -38,7 +38,7 @@ function preen_tree() {
     for(var i=0, l=nodes.length; i < l ; i++) {
         var el = nodes.item(i),
             path = el.dataset['path'];
-        el.classList[(current_path === path) ? 'add' : 'remove']('current');
+        el.classList[current_path.startsWith(path) ? 'add' : 'remove']('current');
         el.classList[(path in open_nodes) ? 'add' : 'remove']('open');
     }
 }
