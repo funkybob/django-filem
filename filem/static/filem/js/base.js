@@ -1,4 +1,5 @@
 var current_path;
+var open_nodes = {'': true};
 
 function json (response) { return response.json(); }
 
@@ -35,13 +36,10 @@ function render_dir_tree(data) {
 function preen_tree() {
     var nodes = document.querySelectorAll('nav li');
     for(var i=0, l=nodes.length; i < l ; i++) {
-        var el = nodes.item(i);
-        el.classList[(current_path === el.dataset['path']) ? 'add' : 'remove']('current');
-        if(current_path !== '' && current_path.startsWith(el.dataset['path'])) {
-            el.classList.add('open');
-        } else {
-            el.classList.remove('open');
-        }
+        var el = nodes.item(i),
+            path = el.dataset['path'];
+        el.classList[(current_path === path) ? 'add' : 'remove']('current');
+        el.classList[(path in open_nodes) ? 'add' : 'remove']('open');
     }
 }
 
@@ -71,9 +69,20 @@ $(function () {
     fetch('tree/', {credentials: 'same-origin'}).then(json).then(render_dir_tree);
     set_current_path(document.location.hash.substr(1));
     $(document).on('click', function (ev) { $('.menu').hide(); });
-    $('#tree').on('dblclick', 'li', function (ev) {
-        set_current_path(this.dataset['path']);
-    });
+    $('#tree').on({
+        'click': function (ev) {
+            set_current_path(this.dataset['path']);
+        },
+        'dblclick': function (ev) {
+            var path = this.dataset['path'];
+            if(path !== '' && (path in open_nodes)) {
+                delete open_nodes[path];
+            } else {
+                open_nodes[path] = true;
+            }
+            preen_tree();
+        },
+    }, 'li');
     $('#tree').on('contextmenu', 'span', function (ev) {
         ev.preventDefault();
         var el = document.querySelector('#dir-menu');
