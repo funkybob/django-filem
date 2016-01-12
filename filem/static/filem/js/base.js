@@ -114,6 +114,7 @@ $(function () {
     $('button').on('click', function (ev) {
         var form = document.querySelector('#dropzone form');
         var data = new FormData(form);
+        data.append('path', current_path);
         fetch('upload/', {method: 'post', body: data, credentials: 'same-origin'})
             .then(function () { refresh_files(current_path); });
     });
