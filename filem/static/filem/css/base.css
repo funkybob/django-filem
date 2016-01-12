@@ -83,11 +83,6 @@ main {
     overflow: hidden;
 }
 
-#tree span {
-    -webkit-user-select: none;
-    display: block;
-}
-
 #tree ul {
     list-style: none;
     margin: 0;
@@ -111,6 +106,12 @@ main {
     font-weight: bold;
 }
 
+#tree span {
+    -webkit-user-select: none;
+    display: block;
+    padding: 5px;
+}
+
 #tree li span:before {
     content: '+';
 }
@@ -118,7 +119,7 @@ main {
     content: '-';
 }
 
-aside .menu {
+.menu {
     display: none;
 }
 
