@@ -85,6 +85,7 @@ main {
 
 #tree span {
     -webkit-user-select: none;
+    display: block;
 }
 
 #tree ul {
@@ -99,7 +100,7 @@ main {
 
 #tree li > ul {
     display: none;
-    padding-left: 2em;
+    padding-left: 0.5em;
 }
 
 #tree li.open > ul {
