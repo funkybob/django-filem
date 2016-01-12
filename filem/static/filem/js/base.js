@@ -3,7 +3,7 @@ var open_nodes = {'': true};
 
 function json (response) { return response.json(); }
 
-function render_tree(nodelist) {
+function render_tree_nodes(nodelist) {
     var c = '';
     nodelist.forEach(function (node) {
         var is_open = node.path.startsWith(current_path);
@@ -11,7 +11,7 @@ function render_tree(nodelist) {
                 '<span>' + node.name + '</span>';
         if(node.children.length > 0) {
             c += '<ul>';
-            c += render_tree(node.children);
+            c += render_tree_nodes(node.children);
             c += '</ul>';
         }
         c += '</li>';
@@ -22,7 +22,7 @@ function render_tree(nodelist) {
 function render_dir_tree(data) {
     var tree = document.querySelector('#tree');
     var content = '<ul>';
-    content += render_tree([
+    content += render_tree_nodes([
         {path: '', name: '/', children: data.tree}
     ]);
     content += '</ul>';
@@ -62,8 +62,13 @@ function set_current_path(path) {
     current_path = path;
     document.querySelector('#title span').innerHTML = current_path;
     preen_tree();
+    refresh_files(path);
+}
+
+function refresh_files(path) {
     fetch('files/' + path, {credentials: 'same-origin'}).then(json).then(render_file_list);
 }
+
 
 $(function () {
     fetch('tree/', {credentials: 'same-origin'}).then(json).then(render_dir_tree);
@@ -105,5 +110,11 @@ $(function () {
         var action = this.dataset['action'],
             // li -> ul -> nav
             target = this.parentNode.parentNode.dataset['target'];
+    });
+    $('button').on('click', function (ev) {
+        var form = document.querySelector('#dropzone form');
+        var data = new FormData(form);
+        fetch('upload/', {method: 'post', body: data, credentials: 'same-origin'})
+            .then(function () { refresh_files(current_path); });
     });
 });
