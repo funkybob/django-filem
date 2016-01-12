@@ -111,11 +111,19 @@ $(function () {
             // li -> ul -> nav
             target = this.parentNode.parentNode.dataset['target'];
     });
+
     $('button').on('click', function (ev) {
         var form = document.querySelector('#dropzone form');
         var data = new FormData(form);
         data.append('path', current_path);
         fetch('upload/', {method: 'post', body: data, credentials: 'same-origin'})
             .then(function () { refresh_files(current_path); });
+    });
+
+    $('.lightbox').on('click', function (ev) {
+        // Close if we are clicked, not out children
+        if(ev.target == this) {
+            this.style.display = 'none';
+        }
     });
 });
