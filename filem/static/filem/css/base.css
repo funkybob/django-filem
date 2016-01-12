@@ -83,6 +83,10 @@ main {
     overflow: hidden;
 }
 
+#tree {
+    overflow: auto;
+}
+
 #tree ul {
     list-style: none;
     margin: 0;
@@ -115,7 +119,8 @@ main {
 #tree li span:before {
     content: '+';
 }
-#tree li.open span:before {
+
+#tree li.open > span:before {
     content: '-';
 }
 
