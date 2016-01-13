@@ -69,6 +69,11 @@ function refresh_files(path) {
     fetch('files/' + path, {credentials: 'same-origin'}).then(json).then(render_file_list);
 }
 
+function show_lightbox() {
+    var lb = document.querySelector('#lightbox');
+    lb.parentNode.style.display = 'flex';
+    return lb;
+}
 
 $(function () {
     fetch('tree/', {credentials: 'same-origin'}).then(json).then(render_dir_tree);
@@ -97,17 +102,22 @@ $(function () {
         el.style.top = ev.pageY + 'px';
     });
     $('#files').on('dblclick', "li", function (ev) {
-        if(this.dataset['type'] == 'inode/directory') {
+        var ctype = this.dataset['type'];
+        if(ctype == 'inode/directory') {
             set_current_path(this.parentElement.dataset['path'] + '/' + this.dataset['name']);
-            return;
         }
-        if(this.dataset['type'].startsWith('image/')) {
+        else if(ctype.startsWith('image/')) {
             var path = this.parentElement.dataset['path'] + '/' + this.dataset['name'];
-            var lb = document.querySelector('#lightbox');
+            var lb = show_lightbox()
             lb.innerHTML = '<img width="90%" height="90%" src="/media/' + path + '">';
             lb.style.textAlign = "center";
-            lb.parentNode.style.display = 'flex';
-            return;
+        }
+        else if(ctype.startsWith('text/')) {
+            var path = this.parentElement.dataset['path'] + '/' + this.dataset['name'];
+            var lb = show_lightbox();
+            fetch('/media/' + path)
+                .then(function (resp) { return resp.text(); })
+                .then(function (text) { lb.innerText = text; });
         }
     });
     window.onpopstate = function () {
