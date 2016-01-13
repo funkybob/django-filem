@@ -66,6 +66,7 @@ function set_current_path(path) {
 }
 
 function refresh_files(path) {
+    path = path || current_path;
     fetch('files/' + path, {credentials: 'same-origin'}).then(json).then(render_file_list);
 }
 
@@ -109,15 +110,17 @@ $(function () {
         else if(ctype.startsWith('image/')) {
             var path = this.parentElement.dataset['path'] + '/' + this.dataset['name'];
             var lb = show_lightbox()
-            lb.innerHTML = '<img width="90%" height="90%" src="/media/' + path + '">';
-            lb.style.textAlign = "center";
+            lb.innerHTML = '<div class="lb-image"><img src="/media/' + path + '"></div>';
         }
         else if(ctype.startsWith('text/')) {
             var path = this.parentElement.dataset['path'] + '/' + this.dataset['name'];
             var lb = show_lightbox();
             fetch('/media/' + path)
                 .then(function (resp) { return resp.text(); })
-                .then(function (text) { lb.innerText = text; });
+                .then(function (text) {
+                    lb.innerHTML = '<pre></pre>';
+                    lb.firstChild.innerText = text;
+                });
         }
     });
     window.onpopstate = function () {
@@ -128,6 +131,16 @@ $(function () {
         var action = this.dataset['action'],
             // li -> ul -> nav
             target = this.parentNode.parentNode.dataset['target'];
+
+        switch(action) {
+        case 'info':
+        case 'rename':
+        case 'create':
+        case 'delete':
+        case 'download':
+        default:
+            break;
+        };
     });
 
     $('button').on('click', function (ev) {
@@ -135,7 +148,7 @@ $(function () {
         var data = new FormData(form);
         data.append('path', current_path);
         fetch('upload/', {method: 'post', body: data, credentials: 'same-origin'})
-            .then(function () { refresh_files(current_path); });
+            .then(function () { refresh_files(); });
     });
 
     $('.lightbox').on('click', function (ev) {

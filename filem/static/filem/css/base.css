@@ -164,10 +164,13 @@ main {
 }
 
 .lightbox > div {
-    flex: 0 1 90%;
     background-color: white;
     padding: 5px;
     border-radius: 5px;
     max-height: 90%;
     overflow: auto;
+}
+
+.lb-image {
+    text-align: center;
 }
