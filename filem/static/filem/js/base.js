@@ -1,6 +1,12 @@
 var current_path;
 var open_nodes = {'': true};
 
+function check_status(response) {
+    if(response.status >= 200 && response.status < 300) { return response; }
+    var err = new Error(response.statusText);
+    err.response = response;
+    throw err;
+}
 function json (response) { return response.json(); }
 
 function render_tree_nodes(nodelist) {
@@ -67,7 +73,13 @@ function set_current_path(path) {
 
 function refresh_files(path) {
     path = path || current_path;
-    fetch('files/' + path, {credentials: 'same-origin'}).then(json).then(render_file_list);
+    fetch('files/' + path, {credentials: 'same-origin'})
+        .then(check_status)
+        .then(json)
+        .then(render_file_list)
+        .catch(function (error) {
+            render_file_list({path: current_path, files: []});
+        });
 }
 
 function show_lightbox() {
@@ -77,8 +89,6 @@ function show_lightbox() {
 }
 
 $(function () {
-    fetch('tree/', {credentials: 'same-origin'}).then(json).then(render_dir_tree);
-    set_current_path(document.location.hash.substr(1));
     $(document).on('click', function (ev) { $('.menu').hide(); });
     $('#tree').on({
         'click': function (ev) {
@@ -116,6 +126,7 @@ $(function () {
             var path = this.parentElement.dataset['path'] + '/' + this.dataset['name'];
             var lb = show_lightbox();
             fetch('/media/' + path)
+                .then(check_status)
                 .then(function (resp) { return resp.text(); })
                 .then(function (text) {
                     lb.innerHTML = '<pre></pre>';
@@ -130,12 +141,19 @@ $(function () {
     $('#dir-menu').on('click', 'li', function (ev) {
         var action = this.dataset['action'],
             // li -> ul -> nav
-            target = this.parentNode.parentNode.dataset['target'];
+            target = this.parentNode.parentNode.dataset['target'],
+            lb;
 
         switch(action) {
-        case 'info':
-        case 'rename':
         case 'create':
+            lb = show_lightbox();
+            lb.innerHTML = '<form>' +
+                '<label>Name:</label>' +
+                '<input type="text" name="name">' +
+                '<button type="button">' +
+            '</form>';
+        case 'rename':
+        case 'info':
         case 'delete':
         case 'download':
         default:
@@ -148,7 +166,8 @@ $(function () {
         var data = new FormData(form);
         data.append('path', current_path);
         fetch('upload/', {method: 'post', body: data, credentials: 'same-origin'})
-            .then(function () { refresh_files(); });
+            .then(check_status)
+            .then(refresh_files);
     });
 
     $('.lightbox').on('click', function (ev) {
@@ -157,4 +176,19 @@ $(function () {
             this.style.display = 'none';
         }
     });
+
+    // Pre-seed the open_node list
+    var parts = document.location.hash.substr(1).split('/');
+    var path = '';
+    for(var i=0, l=parts.length; i < l ; i++) {
+        if(path == '' ) { path = parts[i]; }
+        else { path = path + '/' + parts[i]; }
+        open_nodes[path] = true;
+    }
+    set_current_path(path);
+    fetch('tree/', {credentials: 'same-origin'})
+        .then(check_status)
+        .then(json)
+        .then(render_dir_tree);
+
 });
