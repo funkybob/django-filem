@@ -21,8 +21,24 @@ Lightbox.prototype = {
     show_spinner: function () {
         this.show('<span class="spinner"></span>');
     },
-    show_form: function () {
-        this.show(content);
+    show_form: function (opts) {
+        // build field list
+        var fields = opts.fields.map(function (field) {
+            // XXX Handle textarea, select...
+            return '<div><label>{label}</label><input type="{type}" name="{name}"></div>'.format(field)
+        }).join('\n');
+        // build button list
+        var buttons = opts.buttons.map(function (button) {
+            return '<li><button type="button" name="{name}">{label}</li>'.format(button);
+        }).join('\n');
+        // build content
+        var content = '<form>' +
+            '<fieldset>' +
+                '{fields}' +
+            '</fieldset>' +
+            '<ul class="form-buttons">{buttons}</ul>' +
+        '</form>';
+        this.show(content.format({fields: fields, buttons: buttons}));
         this.el.querySelector('input, textarea, select').focus();
     },
     hide: function () {
