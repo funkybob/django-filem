@@ -3,14 +3,15 @@ from django.http import JsonResponse, Http404
 from django.shortcuts import render
 
 from . import utils
+from .auth import staff_required
 
 
-@utils.staff_required
+@staff_required
 def index(request):
     return render(request, 'filem/index.html')
 
 
-@utils.staff_required
+@staff_required
 def dir_info(request, path=''):
     '''
     Returns a list of entries in the given directory.
@@ -29,7 +30,7 @@ def dir_info(request, path=''):
     })
 
 
-@utils.staff_required
+@staff_required
 def tree(request):
     '''
     Returns a full directory tree as a map of paths -> [list of children]
@@ -38,7 +39,8 @@ def tree(request):
         'tree': utils.dir_tree(utils.ROOT),
     })
 
-@utils.staff_required
+
+@staff_required
 def dir_action(request):
     if request.method == 'POST':
         action = request.POST['action']
@@ -49,3 +51,6 @@ def dir_action(request):
             p.mkdir()
 
     return JsonResponse({})
+
+
+@staff_required

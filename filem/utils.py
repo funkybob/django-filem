@@ -2,15 +2,12 @@ import mimetypes
 from pathlib import PurePath, Path
 
 from django.conf import settings
-from django.contrib.auth.decorators import user_passes_test
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
 from easy_thumbnails.files import Thumbnailer
 
 
 ROOT = Path(settings.MEDIA_ROOT).resolve()
-
-staff_required = user_passes_test(lambda u: u.is_staff)
 
 
 def safe_join(root, path):
