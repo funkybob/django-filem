@@ -47,7 +47,7 @@ def dir_action(request):
         target = request.POST['target']
         if action == 'create':
             name = request.POST['name']
-            p = utils.ROOT / target / name
+            p = utils.safe_join(utils.ROOT, target, name)
             p.mkdir()
 
     return JsonResponse({})
