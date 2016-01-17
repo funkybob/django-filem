@@ -41,6 +41,16 @@ NOTE: Requires Python 3.4 or later
   ]
   ```
 
+  For media when using runserver:
+
+  ```
+  from django.conf import settings
+  if settings.DEBUG:
+      from django.conf.urls.static import static
+
+      urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + urlpatterns
+  ```
+
 5. Add the 64x64/mimetypes images from https://github.com/pasnox/oxygen-icons-png to static/filem/img/mimetypes
 
 6. Log in and visit the page.
