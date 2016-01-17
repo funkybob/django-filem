@@ -39,11 +39,12 @@ $(function () {
             function handleCreateDir(ev) {
                 var data = new FormData(lb.el.querySelector('form'));
                 data.append('target', target);
-                data.append('action', action);
+                data.append('action', 'create');
                 post('dir/', data)
                     .then(function () {
                         lb.hide();
-                        load_dir_tree();
+                        dirlist.load();
+                        filelist.load(dirlist.path);
                     });
             }
             var button = lb.el.querySelector('button');
