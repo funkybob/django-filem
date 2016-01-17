@@ -37,3 +37,15 @@ def tree(request):
     return JsonResponse({
         'tree': utils.dir_tree(utils.ROOT),
     })
+
+@utils.staff_required
+def dir_action(request):
+    if request.method == 'POST':
+        action = request.POST['action']
+        target = request.POST['target']
+        if action == 'create':
+            name = request.POST['name']
+            p = utils.ROOT / target / name
+            p.mkdir()
+
+    return JsonResponse({})

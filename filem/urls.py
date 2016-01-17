@@ -7,4 +7,6 @@ urlpatterns = [
     url(r'^$', views.index),
     url(r'^tree/$', views.tree),
     url(r'^files/(?P<path>.*)$', views.dir_info),
+    # Action handlers
+    url(r'^dir/$', views.dir_action),
 ]
