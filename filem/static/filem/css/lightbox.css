@@ -20,7 +20,7 @@
 
 
 .spinner:before {
-    content: '\273A';
+    content: '\231B';
     font-size: 24pt;
     line-height: 48pt;
     min-width: 48pt;
