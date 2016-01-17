@@ -1,6 +1,7 @@
 
 from django.http import JsonResponse, Http404
 from django.shortcuts import render
+from django.views.decorators.http import require_POST
 
 from . import utils
 from .auth import staff_required
@@ -41,16 +42,19 @@ def tree(request):
 
 
 @staff_required
+@require_POST
 def dir_action(request):
-    if request.method == 'POST':
-        action = request.POST['action']
-        target = request.POST['target']
-        if action == 'create':
-            name = request.POST['name']
-            p = utils.safe_join(utils.ROOT, target, name)
-            p.mkdir()
+    action = request.POST['action']
+    target = request.POST['target']
+    if action == 'create':
+        name = request.POST['name']
+        p = utils.safe_join(utils.ROOT, target, name)
+        p.mkdir()
 
     return JsonResponse({})
 
 
 @staff_required
+@require_POST
+def file_action(request):
+    pass
