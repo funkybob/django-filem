@@ -23,7 +23,7 @@ function check_status(response) {
 }
 function json (response) { return response.json(); }
 
-function fetch.post(url, data) {
+fetch.post = function (url, data) {
     return fetch(url, {
         method: 'post',
         body: data,
@@ -32,7 +32,7 @@ function fetch.post(url, data) {
     });
 }
 
-function fetch.get(url, data) {
+fetch.get = function (url, data) {
     return fetch(url, {
         body: data,
         credentials: 'same-origin',
