@@ -197,3 +197,11 @@ body > footer {
     max-width: 100%;
     max-height: 100%;
 }
+
+/*
+ * Dropzone
+ */
+#db_target {
+    width: 1px;
+    height: 1px;
+}
