@@ -121,11 +121,11 @@ main {
 }
 
 #tree li span:before {
-    content: '+';
+    content: '\25BA';
 }
 
 #tree li.open > span:before {
-    content: '-';
+    content: '\25BC';
 }
 
 .menu {
