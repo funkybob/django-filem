@@ -41,5 +41,5 @@ fetch.get = function (url, data) {
 
 /* string helper */
 String.prototype.format = function (args) {
-    return this.replace(/{(\w+)}/g, function(m, key) { return args[key]; });
+    return this.replace(/{([\-\w]+)}/g, function(m, key) { return args[key]; });
 }
