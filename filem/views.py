@@ -1,5 +1,5 @@
 
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse, Http404, HttpResponseBadRequest
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 
@@ -46,9 +46,13 @@ def tree(request):
 def dir_action(request):
     action = request.POST['action']
     target = request.POST['target']
+    try:
+        base_path = utils.safe_join(utils.ROOT, target)
+    except ValueError:
+        return HttpResponseBadRequest('Invalid Path')
     if action == 'create':
         name = request.POST['name']
-        p = utils.safe_join(utils.ROOT, target, name)
+        p = utils.safe_join(base_path, name)
         p.mkdir()
 
     return JsonResponse({})
