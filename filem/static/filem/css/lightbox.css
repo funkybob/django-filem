@@ -18,7 +18,6 @@
     overflow: auto;
 }
 
-
 .spinner:before {
     content: '\231B';
     font-size: 24pt;
@@ -32,4 +31,25 @@
 @keyframes spinner {
     0% { font-size: 24pt; }
     50% { font-size: 48pt; }
+}
+
+.lightbox fieldset {
+    border: 0;
+    margin: 5px;
+}
+
+.lightbox fieldset label {
+    margin-right: 5px;
+}
+
+ul.form-buttons {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+
+ul.form-buttons li {
+    margin: 5px;
+    display: inline-block;
 }
