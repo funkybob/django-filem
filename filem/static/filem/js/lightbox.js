@@ -1,16 +1,12 @@
 
-function Lightbox(el, options) {
+function Lightbox(el) {
     if(typeof el == 'string') {
         this.el = document.querySelector(el);
     } else {
         this.el = el;
     }
-    this.$ = $(this.el);
 
-    this.options = $.extend({}, {
-    }, options);
-
-    $(this.el.parentNode).on('click', function (ev) {
+    this.el.parentElement.addEventListener('click', function (ev) {
         if(ev.target == this.el.parentNode) { this.hide(); }
     }.bind(this));
 
