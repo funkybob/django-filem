@@ -3,40 +3,38 @@
 html, body {
     margin: 0;
     padding: 0;
+    height: 100vh;
 }
 
 /*
  * Layout
  */
 
-main {
-    height: 100vh;
-    display: flex;
+ /* Vertical stack: header / body / footer */
+body {
+  display: flex;
+  flex-direction: column;
 }
 
+body > header { flex: 0 0 2em; }
+body > footer { flex: 0 0 2em; }
+main { flex: 1 1 auto; }
+
+/* Horizontal stack: col1 / col2 */
+main { display: flex; }
+#col1 { flex: 0 0 300px; }
+#col2 { flex: 1 1 auto; }
+
+/* Vertical stack: tree / dropzone */
 #col1 {
-    flex: 0 0 300px;
     display: flex;
     flex-direction: column;
 }
 
-#tree {
-    flex: 1 1 auto;
-}
+#tree { flex: 1 1 auto; }
+#dropzone { flex: 0 0 10% }
 
-#dropzone {
-    flex: 0 0 10%
-}
-
-#col2 {
-    flex: 1 1 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-#title {
-    flex: 0 0 2em;
-}
+/* Files takes all the space */
 #files {
     flex: 1 1 100%;
     overflow: auto;
@@ -45,8 +43,38 @@ main {
 /*
  * Styling
  */
+
+body {
+  background-color: grey;
+}
+
+main {
+  background-color: white;
+}
+
+body > header, body > footer {
+  background-color: white;
+  line-height: 2em;
+}
+
+body > header {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: solid grey 1px;
+}
+
+body > footer {
+  border-top: solid grey 1px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
 #col1, #col2 {
     padding: 5px;
+}
+
+#col2 {
+    border-left: solid grey 1px;
 }
 
 #title {
