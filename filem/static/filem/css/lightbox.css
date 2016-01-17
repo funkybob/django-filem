@@ -1,0 +1,35 @@
+.lightbox {
+    display: none;
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox > div {
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+    max-height: 90%;
+    max-width: 90%;
+    overflow: auto;
+}
+
+
+.spinner:before {
+    content: '\273A';
+    font-size: 24pt;
+    line-height: 48pt;
+    min-width: 48pt;
+    display: inline-block;
+    text-align: center;
+    animation: spinner 2s infinite;
+}
+
+@keyframes spinner {
+    0% { font-size: 24pt; }
+    50% { font-size: 48pt; }
+}
