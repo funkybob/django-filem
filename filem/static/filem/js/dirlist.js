@@ -54,6 +54,7 @@ DirList.prototype = {
                 path = el.dataset.path;
             el.classList[this._path.startsWith(path) ? 'add' : 'remove']('current');
             el.classList[(path in this.open_nodes) ? 'add' : 'remove']('open');
+            el.classList[(path === this._path) ? 'add' : 'remove']('selected');
         }
     },
     get path() { return this._path; },

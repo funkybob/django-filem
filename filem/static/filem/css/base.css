@@ -43,6 +43,10 @@ main { display: flex; }
  * Styling
  */
 
+ .selected {
+   background-color: linen;
+ }
+
 body {
   background-color: grey;
 }
@@ -108,10 +112,6 @@ body > footer {
 
 #files li {
   border-radius: 5px;
-}
-
-#files li.selected {
-  background-color: linen;
 }
 
 #files img {
