@@ -1,25 +1,35 @@
 var lb, dirlist, filelist;
 
 $(function () {
-    $(document).on('click', function (ev) { $('.menu').hide(); });
-    $('#tree').on('contextmenu', 'span', function (ev) {
-        ev.preventDefault();
-        var el = document.querySelector('#dir-menu');
-        el.dataset.target = ev.currentTarget.parentNode.dataset.path;
-        el.style.display = 'block';
-        el.style.left = ev.pageX + 'px';
-        el.style.top = ev.pageY + 'px';
+    document.addEventListener('keydown', function (ev) {
+        if(ev.keyCode == 27) { lb.hide(); }
     });
-    window.onpopstate = function () {
-        dirlist.path = document.location.hash.substr(1);
-    };
 
-    $('#dir-menu').on('click', 'li', function (ev) {
-        var action = this.dataset.action,
-            // li -> ul -> nav
-            target = this.parentNode.parentNode.dataset.target;
-        switch(action) {
-        case 'create':
+    $('#dropzone button').on('click', function (ev) {
+        var form = document.querySelector('#dropzone form');
+        var data = new FormData(form);
+        data.append('path', current_path);
+        post('upload/', data)
+            .then(check_status)
+            .then(dirlist.load);
+    });
+
+    lb = new Lightbox('#lightbox');
+    filelist = new FileList('#files');
+    dirlist = new DirList('#tree');
+
+    // Load files list on path change
+    dirlist.el.addEventListener('path', function() { filelist.load(dirlist.path); });
+    // Update path on back button
+    window.addEventListener('popstate', function () {
+        dirlist.path = document.location.hash.substr(1);
+    });
+    dirlist.set_initial_path(document.location.hash.substr(1));
+    // Set dirlist path when dir is dblclicked
+    filelist.el.addEventListener('setpath', function(ev) { dirlist.path = ev.detail; });
+
+    var dir_menu = new Menu('#dir-menu', '#tree', {
+        create: function(target, ev) {
             lb.show(
             '<form>' +
                 '<label>Name: <input type="text" name="name"></label>' +
@@ -41,32 +51,7 @@ $(function () {
             lb.el.addEventListener('hide', function () {
                 button.removeEventListener('click', handleCreateDir);
             });
-            break;
-        case 'rename':
-        case 'info':
-        case 'delete':
-        case 'download':
-        default:
-            break;
         }
     });
 
-    $('#dropzone button').on('click', function (ev) {
-        var form = document.querySelector('#dropzone form');
-        var data = new FormData(form);
-        data.append('path', current_path);
-        post('upload/', data)
-            .then(check_status)
-            .then(dirlist.load);
-    });
-
-    lb = new Lightbox('#lightbox');
-    filelist = new FileList('#files');
-    dirlist = new DirList('#tree');
-
-    // Load files list on path change
-    dirlist.el.addEventListener('path', function() { filelist.load(dirlist.path); });
-    dirlist.set_initial_path(document.location.hash.substr(1));
-    // Set dirlist path when dir is dblclicked
-    filelist.el.addEventListener('setpath', function(ev) { dirlist.path = ev.detail; });
 });
