@@ -45,7 +45,7 @@ def file_details(path):
     '''
     Returns a dict of info about a Path
     '''
-    st = path.stat()
+    # st = path.stat()
     content_type, encoding = mimetypes.guess_type(path.name)
 
     if path.is_dir():
@@ -70,11 +70,11 @@ def file_details(path):
         'is_dir': path.is_dir(),
         'is_file': path.is_file(),
         'is_symlink': path.is_symlink(),
-        'size': st.st_size,
-        'mode': st.st_mode,
-        'mtime': st.st_mtime,
-        'ctime': st.st_ctime,
+        # 'size': st.st_size,
+        # 'mode': st.st_mode,
+        # 'mtime': st.st_mtime,
+        # 'ctime': st.st_ctime,
         'content-type': content_type,
-        'encoding': encoding,
+        # 'encoding': encoding,
         'thumb': img,
     }
