@@ -31,32 +31,8 @@ $(function () {
     // Set dirlist path when dir is dblclicked
     filelist.el.addEventListener('setpath', function(ev) { dirlist.path = ev.detail; });
 
-    var dir_menu = new Menu('#dir-menu', '#tree', {
-        create: function(target, ev) {
-            lb.show(
-            '<form>' +
-                '<div><label>Name: <input type="text" name="name"></label></div>' +
-                '<div><button type="button">Create</button></div>' +
-            '</form>'
-            );
-            lb.el.querySelector('input').focus();
-            function handleCreateDir(ev) {
-                var data = new FormData(lb.el.querySelector('form'));
-                data.append('target', target);
-                data.append('action', 'create');
-                fetch.post('dir/', data)
-                    .then(function () {
-                        lb.hide();
-                        dirlist.load();
-                        filelist.load(dirlist.path);
-                    });
-            }
-            var button = lb.el.querySelector('button');
-            button.addEventListener('click', handleCreateDir);
-            lb.el.addEventListener('hide', function () {
-                button.removeEventListener('click', handleCreateDir);
-            });
-        }
-    });
+    var dir_menu = new Menu('#dir-menu', '#tree', new DirMenuActions());
+
+    var file_menu = new Menu('#file-menu', '#file', {});
 
 });

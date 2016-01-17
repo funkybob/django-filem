@@ -23,7 +23,7 @@ function DirList(el) {
 
 DirList.prototype = {
     load: function (path) {
-        path = path || this._path;
+        path = path || this._path || '/';
         fetch.get('tree')
             .then(check_status)
             .then(json)
@@ -76,3 +76,35 @@ DirList.prototype = {
         this.path = path;
     }
 }
+
+function DirMenuActions() {
+    return this;
+}
+DirMenuActions.prototype = {
+    create: function(target, ev) {
+        lb.show_form({
+            fields: [
+                {label: 'Name', name: 'name', type: 'text'}
+            ],
+            buttons: [
+                {label: 'Create', name: 'create'}
+            ]
+        })
+        function handleCreateDir(ev) {
+            var data = new FormData(lb.el.querySelector('form'));
+            data.append('target', target);
+            data.append('action', 'create');
+            fetch.post('dir/', data)
+                .then(function () {
+            lb.hide();
+                    dirlist.load();
+                        filelist.load(dirlist.path);
+                });
+        }
+        var button = lb.el.querySelector('button');
+        button.addEventListener('click', handleCreateDir);
+        lb.el.addEventListener('hide', function () {
+            button.removeEventListener('click', handleCreateDir);
+        });
+    }
+};
