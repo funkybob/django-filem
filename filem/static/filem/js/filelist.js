@@ -1,7 +1,12 @@
 function FileList(el) {
     this.el = element(el);
 
-    $('#files').on('dblclick', "li", this.ondblclick.bind(this));
+    $(this.el).on('dblclick', 'li', this.ondblclick.bind(this));
+    $(this.el).on('click', 'li', function (ev) {
+      var elements = Array.apply(null, this.el.querySelectorAll('li'));
+      elements.forEach(function (el) { el.classList.remove('selected'); });
+      ev.currentTarget.classList.add('selected');
+    }.bind(this));
 
     return this;
 }

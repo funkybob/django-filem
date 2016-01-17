@@ -106,6 +106,14 @@ body > footer {
     overflow: hidden;
 }
 
+#files li {
+  border-radius: 5px;
+}
+
+#files li.selected {
+  background-color: linen;
+}
+
 #files img {
   border-radius: 5px;
   height: 64px;
