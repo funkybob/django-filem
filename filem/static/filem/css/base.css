@@ -168,9 +168,30 @@ main {
     padding: 5px;
     border-radius: 5px;
     max-height: 90%;
+    max-width: 90%;
     overflow: auto;
 }
 
 .lb-image {
     text-align: center;
+}
+
+.lb-image img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.spinner:before {
+    content: '\273A';
+    font-size: 24pt;
+    line-height: 48pt;
+    min-width: 48pt;
+    display: inline-block;
+    text-align: center;
+    animation: spinner 2s infinite;
+}
+
+@keyframes spinner {
+    0% { font-size: 24pt; }
+    50% { font-size: 48pt; }
 }
