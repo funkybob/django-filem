@@ -1,10 +1,6 @@
 
 function Lightbox(el) {
-    if(typeof el == 'string') {
-        this.el = document.querySelector(el);
-    } else {
-        this.el = el;
-    }
+    this.el = element(el);
 
     this.el.parentElement.addEventListener('click', function (ev) {
         if(ev.target == this.el.parentNode) { this.hide(); }

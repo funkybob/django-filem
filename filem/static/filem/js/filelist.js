@@ -1,9 +1,5 @@
 function FileList(el) {
-    if(typeof el == 'string') {
-        this.el = document.querySelector(el);
-    } else {
-        this.el = el;
-    }
+    this.el = element(el);
 
     $('#files').on('dblclick', "li", this.ondblclick.bind(this));
 

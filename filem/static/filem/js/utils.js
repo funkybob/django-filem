@@ -9,6 +9,11 @@ function get_cookie(name) {
     }
 }
 
+/* */
+function element(el) {
+    return (typeof el == 'string') ? document.querySelector(el) : el;
+}
+
 /* Helpers for Fetch */
 function check_status(response) {
     if(response.status >= 200 && response.status < 300) { return response; }

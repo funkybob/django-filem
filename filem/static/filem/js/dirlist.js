@@ -1,9 +1,6 @@
 function DirList(el) {
-    if(typeof el == 'string') {
-        this.el = document.querySelector(el);
-    } else {
-        this.el = el;
-    }
+    this.el = element(el);
+
     this.open_nodes = {'': true};
 
     $(this.el).on({
@@ -79,6 +76,6 @@ DirList.prototype = {
             else { path = path + '/' + parts[i]; }
             this.open_nodes[path] = true;
         }
-        this.path = path;        
+        this.path = path;
     }
 }
