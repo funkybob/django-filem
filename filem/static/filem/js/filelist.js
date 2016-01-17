@@ -8,7 +8,7 @@ function FileList(el) {
 
 FileList.prototype = {
     load: function (path) {
-        fetch('files/' + path, {credentials: 'same-origin'})
+        fetch.get('files/' + path)
             .then(check_status)
             .then(json)
             .then(this.render.bind(this))
@@ -17,12 +17,9 @@ FileList.prototype = {
             }.bind(this));
     },
     render: function (data) {
-        var c = '<ul data-path="' + data.path + '">';
+        var c = '<ul data-path="{path}">'.format(data);
         data.files.forEach(function (node) {
-            c += '<li data-name="' + node.name + '" data-type="' + node['content-type'] + '">' +
-                    '<img src="' + node.thumb + '">' +
-                    '<p>' + node.name + '</p>' +
-                '</li>';
+            c += '<li data-name="{name}" data-type="{content-type}"><img src="{thumb}"><p>{name}</p></li>'.format(node);
         });
         c += '</ul>';
         this.el.innerHTML = c;
@@ -39,14 +36,13 @@ FileList.prototype = {
         }
         else if(ctype.startsWith('text/')) {
             lb.show_spinner();
-            fetch('/media/' + path)
+            fetch.get('/media/' + path)
                 .then(check_status)
                 .then(function (resp) { return resp.text(); })
                 .then(function (text) {
                     lb.set_content('<pre>' + text + '</pre>');
                 });
         }
-
     }
 }
 

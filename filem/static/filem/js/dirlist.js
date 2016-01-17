@@ -24,7 +24,7 @@ function DirList(el) {
 DirList.prototype = {
     load: function (path) {
         path = path || this._path;
-        fetch('tree/', {credentials: 'same-origin'})
+        fetch.get('tree')
             .then(check_status)
             .then(json)
             .then(this.render.bind(this));
@@ -39,12 +39,9 @@ DirList.prototype = {
         var c = '';
         nodelist.forEach(function (node) {
             var is_open = node.path.startsWith(this._path);
-            c += '<li data-path="' + node.path + '">' +
-                    '<span>' + node.name + '</span>';
+            c += '<li data-path="{path}"><span>{name}</span>'.format(node);
             if(node.children.length > 0) {
-                c += '<ul>';
-                c += this.render_nodes(node.children);
-                c += '</ul>';
+                c += '<ul>' + this.render_nodes(node.children) + '</ul>';
             }
             c += '</li>';
         }.bind(this));

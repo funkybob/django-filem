@@ -9,7 +9,7 @@ function get_cookie(name) {
     }
 }
 
-/* */
+/* resolve a string to an element, if it's not already */
 function element(el) {
     return (typeof el == 'string') ? document.querySelector(el) : el;
 }
@@ -23,11 +23,23 @@ function check_status(response) {
 }
 function json (response) { return response.json(); }
 
-function post(url, data) {
+function fetch.post(url, data) {
     return fetch(url, {
         method: 'post',
         body: data,
         credentials: 'same-origin',
         headers: { 'X-CSRFToken': get_cookie('csrftoken') }
     });
+}
+
+function fetch.get(url, data) {
+    return fetch(url, {
+        body: data,
+        credentials: 'same-origin',
+    })
+}
+
+/* string helper */
+String.prototype.format = function (args) {
+    return this.replace(/{(\w+)}/g, function(m, key) { return args[key]; });
 }

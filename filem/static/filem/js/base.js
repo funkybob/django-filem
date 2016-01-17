@@ -9,7 +9,7 @@ $(function () {
         var form = document.querySelector('#dropzone form');
         var data = new FormData(form);
         data.append('path', current_path);
-        post('upload/', data)
+        fetch.post('upload/', data)
             .then(check_status)
             .then(dirlist.load);
     });
@@ -19,7 +19,10 @@ $(function () {
     dirlist = new DirList('#tree');
 
     // Load files list on path change
-    dirlist.el.addEventListener('path', function() { filelist.load(dirlist.path); });
+    dirlist.el.addEventListener('path', function() {
+        filelist.load(dirlist.path);
+        document.querySelector('#title span').innerHTML = dirlist.path;
+    });
     // Update path on back button
     window.addEventListener('popstate', function () {
         dirlist.path = document.location.hash.substr(1);
@@ -32,15 +35,16 @@ $(function () {
         create: function(target, ev) {
             lb.show(
             '<form>' +
-                '<label>Name: <input type="text" name="name"></label>' +
-                '<button type="button">Create</button>' +
+                '<div><label>Name: <input type="text" name="name"></label></div>' +
+                '<div><button type="button">Create</button></div>' +
             '</form>'
             );
+            lb.el.querySelector('input').focus();
             function handleCreateDir(ev) {
                 var data = new FormData(lb.el.querySelector('form'));
                 data.append('target', target);
                 data.append('action', 'create');
-                post('dir/', data)
+                fetch.post('dir/', data)
                     .then(function () {
                         lb.hide();
                         dirlist.load();

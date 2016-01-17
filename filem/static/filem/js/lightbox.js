@@ -21,6 +21,10 @@ Lightbox.prototype = {
     show_spinner: function () {
         this.show('<span class="spinner"></span>');
     },
+    show_form: function () {
+        this.show(content);
+        this.el.querySelector('input, textarea, select').focus();
+    },
     hide: function () {
         var e = new Event('hide');
         if(this.el.dispatchEvent(e)) {
