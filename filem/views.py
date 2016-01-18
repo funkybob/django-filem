@@ -57,7 +57,7 @@ def dir_action(request):
         target.rename(name)
     elif action == 'create':
         name = form.cleaned_data['name']
-        p = utils.safe_join(target, name)
+        p = target / name
         p.mkdir()
     elif action == 'delete':
         target.unlink()
