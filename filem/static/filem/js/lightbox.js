@@ -24,7 +24,8 @@ Lightbox.prototype = {
     show_form: function (opts) {
         var templates = {
             '': '<div><label>{label}</label><input type="{type}" name="{name}"></div>',
-            'label': '<div><label>{label}</label></div>'
+            'label': '<div><label>{label}</label></div>',
+            'textarea': '<div><label>{label}</label><textarea name="{name}"></textarea>'
         }
         // build field list
         var fields = opts.fields.map(function (field) {
