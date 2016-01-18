@@ -22,14 +22,19 @@ Lightbox.prototype = {
         this.show('<span class="spinner"></span>');
     },
     show_form: function (opts) {
+        var templates = {
+            '': '<div><label>{label}</label><input type="{type}" name="{name}"></div>',
+            'label': '<div><label>{label}</label></div>'
+        }
         // build field list
         var fields = opts.fields.map(function (field) {
             // XXX Handle textarea, select...
-            return '<div><label>{label}</label><input type="{type}" name="{name}"></div>'.format(field)
+            tmpl = field['template'] || templates[field.type] || templates[''];
+            return tmpl.format(field)
         }).join('\n');
         // build button list
         var buttons = opts.buttons.map(function (button) {
-            return '<li><button type="button" name="{name}">{label}</li>'.format(button);
+            return '<li><button type="button" name="{name}" data-action="{action}">{label}</li>'.format(button);
         }).join('\n');
         // build content
         var content = '<form>' +
@@ -40,6 +45,9 @@ Lightbox.prototype = {
         '</form>';
         this.show(content.format({fields: fields, buttons: buttons}));
         this.el.querySelector('input, textarea, select').focus();
+        this.el.on('click', 'button', function (ev) {
+            this.el.dispatchEvent(new CustomEvent('button', {detail: ev.currentTarget.datamap.action}));
+        }.bind(this))
     },
     hide: function () {
         var e = new Event('hide');
