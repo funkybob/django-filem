@@ -4,7 +4,7 @@ from django.http import JsonResponse, Http404, HttpResponse, HttpResponseBadRequ
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 
-from . import utils
+from . import forms, utils
 from .auth import staff_required
 
 
@@ -45,25 +45,28 @@ def tree(request):
 @staff_required
 @require_POST
 def dir_action(request):
-    action = request.POST['action']
-    target = request.POST['target']
-    try:
-        base_path = utils.safe_join(utils.ROOT, target)
-    except ValueError:
-        return HttpResponseBadRequest('Invalid Path')
+    form = forms.DirActionForm(request.POST)
+    if not form.is_valid():
+        return HttpResponseBadRequest(form.errors.as_json(), content_type='application/json')
+
+    action = form.cleaned_data['action']
+    target = form.cleaned_data['target']
+
     if action == 'rename':
-        pass
+        name = form.cleaned_data['name']
+        target.rename(name)
     elif action == 'create':
-        name = request.POST['name']
-        p = utils.safe_join(base_path, name)
+        name = form.cleaned_data['name']
+        p = utils.safe_join(target, name)
         p.mkdir()
     elif action == 'delete':
-        pass
+        target.unlink()
     elif action == 'download':
         response = HttpResponse()
-        response['Content-Disposition'] = 'attachment; filename={}_{}.zip'.format(target,)
+        filename = str(target.relative_to(utils.ROOT)).replace('/', '_')
+        response['Content-Disposition'] = 'attachment; filename={}_{}.zip'.format(filename,)
         with zipfile.ZipFile(response, compression=zipfile.ZIP_DEFLATED) as zf:
-            for path in base_path.glob('**/*'):
+            for path in target.glob('**/*'):
                 if path.is_dir():
                     continue
                 zf.write(str(path), arcname=str(path.relative_to(utils.ROOT)))
