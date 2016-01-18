@@ -1,5 +1,6 @@
+import zipfile
 
-from django.http import JsonResponse, Http404, HttpResponseBadRequest
+from django.http import JsonResponse, Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 
@@ -50,10 +51,23 @@ def dir_action(request):
         base_path = utils.safe_join(utils.ROOT, target)
     except ValueError:
         return HttpResponseBadRequest('Invalid Path')
-    if action == 'create':
+    if action == 'rename':
+        pass
+    elif action == 'create':
         name = request.POST['name']
         p = utils.safe_join(base_path, name)
         p.mkdir()
+    elif action == 'delete':
+        pass
+    elif action == 'download':
+        response = HttpResponse()
+        response['Content-Disposition'] = 'attachment; filename={}_{}.zip'.format(target,)
+        with zipfile.ZipFile(response, compression=zipfile.ZIP_DEFLATED) as zf:
+            for path in base_path.glob('**/*'):
+                if path.is_dir():
+                    continue
+                zf.write(str(path), arcname=str(path.relative_to(utils.ROOT)))
+        return response
 
     return JsonResponse({})
 
