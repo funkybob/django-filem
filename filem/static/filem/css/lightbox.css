@@ -42,6 +42,10 @@
     margin-right: 5px;
 }
 
+.form-buttons {
+    border-top: solid lightgrey 1px;
+}
+
 ul.form-buttons {
     list-style: none;
     margin: 0;
