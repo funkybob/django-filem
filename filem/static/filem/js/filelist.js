@@ -49,7 +49,7 @@ FileList.prototype = {
                 });
         }
     }
-}
+};
 
 $('#files').on('dblclick', "li", function (ev) {
 });
