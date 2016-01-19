@@ -68,7 +68,7 @@ DirList.prototype = {
     set_initial_path: function(path) {
         // pre-seed the open nodes
         var parts = path.split('/');
-        var path = '';
+        path = '';
         for(var i=0, l=parts.length; i < l ; i++) {
             if(path === '' ) { path = parts[i]; }
             else { path = path + '/' + parts[i]; }
@@ -76,11 +76,12 @@ DirList.prototype = {
         }
         this.path = path;
     }
-}
+};
 
 function DirMenuActions() {
     return this;
 }
+
 DirMenuActions.prototype = {
     create: function(target, ev) {
         lb.show_form({
@@ -90,22 +91,40 @@ DirMenuActions.prototype = {
             buttons: [
                 {label: 'Create', name: 'create'}
             ]
-        })
-        function handleCreateDir(ev) {
-            var data = new FormData(lb.el.querySelector('form'));
-            data.append('target', target);
-            data.append('action', 'create');
-            fetch.post('dir/', data)
-                .then(function () {
-            lb.hide();
-                    dirlist.load();
-                        filelist.load(dirlist.path);
-                });
-        }
-        var button = lb.el.querySelector('button');
-        button.addEventListener('click', handleCreateDir);
+        });
+        // XXX listen to lb "button" events
+        lb.el.addEventListener('button', this.do_create.bind(this));
         lb.el.addEventListener('hide', function () {
-            button.removeEventListener('click', handleCreateDir);
+            button.removeEventListener('click', this.do_create);
+        });
+    },
+    do_create: function (ev) {
+        switch(ev.detail) {
+            case 'cancel':
+            case 'close':
+                break;
+            case 'create':
+                var data = new FormData(lb.el.querySelector('form'));
+                data.append('target', target);
+                data.append('action', 'create');
+                fetch.post('dir/', data)
+                    .then(function () {
+                        lb.hide();
+                        dirlist.load();
+                        filelist.load(dirlist.path);
+                    });
+        }
+        ls.hide();
+    },
+    'delete': function (target, ev) {
+        lb.show_form({
+            fields: [
+                {'label': 'Are you sure?', type: 'label'}
+            ],
+            buttons: [
+                {name: 'cancel', label: 'Cancel', action: 'cancel'},
+                {name: 'confirm', label: 'Confirm', action: 'confirm'}
+            ]
         });
     }
 };
