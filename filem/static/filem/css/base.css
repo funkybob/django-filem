@@ -58,7 +58,7 @@ main {
 
 body > header, body > footer {
   background-color: ghostwhite;
-  line-height: 2em;
+  line-height: calc(2em - 1px);
 }
 
 body > header {
