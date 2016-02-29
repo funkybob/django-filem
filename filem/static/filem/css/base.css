@@ -26,27 +26,30 @@ main { display: flex; }
 #col1 { flex: 0 0 300px; }
 #col2 { flex: 1 1 auto; }
 
-/* Vertical stack: tree */
 #col1 {
-    display: flex;
-    flex-direction: column;
+  overflow: auto;
 }
 
-#tree { flex: 1 1 auto; }
+#tree {
+  height: 100%;
+}
 
 /* Files takes all the space */
+#col2 {
+  overflow: auto;
+}
+
 #files {
-    flex: 1 1 100%;
-    overflow: auto;
+  height: 100%;
 }
 
 /*
  * Styling
  */
 
- .selected {
-   background-color: linen;
- }
+.selected {
+  background-color: linen;
+}
 
 body {
   background-color: grey;
