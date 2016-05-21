@@ -1,11 +1,12 @@
 var lb, dirlist, filelist;
 
-$(function () {
+document.addEventListener('DOMContentLoaded', function () {
+
     document.addEventListener('keydown', function (ev) {
         if(ev.keyCode == 27) { lb.hide(); }
     });
 
-    $('#dropzone button').on('click', function (ev) {
+    document.querySelector('#dropzone button').addEventListener('click', function (ev) {
         var form = document.querySelector('#dropzone form');
         var data = new FormData(form);
         data.append('path', current_path);
