@@ -3,20 +3,23 @@ function DirList(el) {
 
     this.open_nodes = {'': true};
 
-    $(this.el).on({
-        'click': function (ev) {
-            this.path = ev.currentTarget.dataset.path;
-        }.bind(this),
-        'dblclick': function (ev) {
-            var path = ev.currentTarget.dataset.path;
-            if(path !== '' && (path in this.open_nodes)) {
-                delete this.open_nodes[path];
-            } else {
-                this.open_nodes[path] = true;
-            }
-            this.preen();
-        }.bind(this),
-    }, 'li');
+    this.el.addEventListener('click', function (ev) {
+        var tgt = delegate(ev, this.el, 'li');
+        if(tgt === false) return;
+        this.path = tgt.dataset.path;
+    }.bind(this));
+
+    this.el.addEventListener('dblclick', function (ev) {
+        tgt = delegate(ev, this.el, 'li');
+        if(tgt === false) return;
+        var path = tgt.dataset.path;
+        if(path !== '' && (path in this.open_nodes)) {
+            delete this.open_nodes[path];
+        } else {
+            this.open_nodes[path] = true;
+        }
+        this.preen();
+    }.bind(this))
 
     return this;
 }
