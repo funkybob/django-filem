@@ -6,20 +6,23 @@ function Menu(el, target, handlers) {
     this.el = element(el);
     this.target = element(target);
 
-    $(this.target).on('contextmenu', 'span', function (ev) {
+    this.target.addEventListener('contextmenu', function (ev) {
+        var tgt = delegate(ev, this.target, 'span');
+        if(tgt === false) return;
         ev.preventDefault();
-        this.el.dataset.target = ev.currentTarget.parentNode.dataset.path;
+        this.el.dataset.target = tgt.parentNode.dataset.path;
         this.show(ev.pageX, ev.pageY);
     }.bind(this));
 
     document.addEventListener('click', this.hide.bind(this));
 
-    $(this.el).on('click', 'li', function (ev) {
-        var el = ev.currentTarget,
-            action = el.dataset.action,
-            target = el.parentNode.parentNode.dataset.target;
+    this.el.addEventListener('click', function (ev) {
+        var tgt = delegate(ev, this.el, 'li');
+        if(tgt === false) return;
+        var action = tgt.dataset.action,
+            target = tgt.parentNode.parentNode.dataset.target;
 
-        handlers[action](target, ev, el);
+        handlers[action](target, ev, tgt);
 
     }.bind(this));
 

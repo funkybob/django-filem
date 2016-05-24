@@ -1,11 +1,18 @@
 function FileList(el) {
     this.el = element(el);
 
-    $(this.el).on('dblclick', 'li', this.ondblclick.bind(this));
-    $(this.el).on('click', 'li', function (ev) {
-      var elements = Array.apply(null, this.el.querySelectorAll('li'));
-      elements.forEach(function (el) { el.classList.remove('selected'); });
-      ev.currentTarget.classList.add('selected');
+    this.el.addEventListener('click', function (ev) {
+        var tgt = delegate(ev, this.el, 'li');
+        if(tgt === false) return;
+        var elements = Array.apply(null, tgt.querySelectorAll('li'));
+        elements.forEach(function (el) { el.classList.remove('selected'); });
+        tgt.classList.add('selected');
+    }.bind(this));
+
+    this.el.addEventListener('dblclick', function (ev) {
+        var tgt = delegate(ev, this.el, 'li');
+        if(tgt === false) return;
+        this.ondblclick(this);
     }.bind(this));
 
     return this;
@@ -50,6 +57,3 @@ FileList.prototype = {
         }
     }
 };
-
-$('#files').on('dblclick', "li", function (ev) {
-});
