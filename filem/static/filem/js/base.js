@@ -34,6 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var dir_menu = new Menu('#dir-menu', '#tree', new DirMenuActions());
 
-    var file_menu = new Menu('#file-menu', '#file', {});
+    var file_menu = new Menu('#file-menu', '#files', {});
 
 });
