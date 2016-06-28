@@ -12,7 +12,7 @@ function FileList(el) {
     this.el.addEventListener('dblclick', function (ev) {
         var tgt = delegate(ev, this.el, 'li');
         if(tgt === false) return;
-        this.ondblclick(this);
+        this.ondblclick(ev);
     }.bind(this));
 
     return this;
@@ -37,9 +37,9 @@ FileList.prototype = {
         this.el.innerHTML = c;
     },
     ondblclick: function (ev) {
-        var target = ev.currentTarget,
-            path = target.parentElement.dataset.path + '/' + target.dataset.name,
-            ctype = target.dataset.type;
+        var path = ev.currentTarget.firstChild.dataset.path + '/' + ev.target.parentElement.dataset.name,
+            ctype = ev.target.parentElement.dataset.type;
+
         if(ctype == 'inode/directory') {
             this.el.dispatchEvent(new CustomEvent('setpath', {detail: path}));
         }
