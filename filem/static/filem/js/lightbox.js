@@ -35,16 +35,10 @@ Lightbox.prototype = {
         }).join('\n');
         // build button list
         var buttons = opts.buttons.map(function (button) {
-            return '<li><button type="button" name="{name}" data-action="{action}">{label}</li>'.format(button);
+            return `<li><button type="button" name="${button.name}" data-action="${button.action}">${button.label}</li>`;
         }).join('\n');
         // build content
-        var content = '<form>' +
-            '<fieldset>' +
-                '{fields}' +
-            '</fieldset>' +
-            '<ul class="form-buttons">{buttons}</ul>' +
-        '</form>';
-        this.show(content.format({fields: fields, buttons: buttons}));
+        this.show(`<form> <fieldset>${fields}</fieldset> <ul class="form-buttons">{buttons}</ul> </form>`);
         this.el.querySelector('input, textarea, select').focus();
         this.el.on('click', 'button', function (ev) {
             this.el.dispatchEvent(new CustomEvent('button', {detail: ev.currentTarget.datamap.action}));

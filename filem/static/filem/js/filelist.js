@@ -27,9 +27,9 @@ FileList.prototype = {
             }.bind(this));
     },
     render: function (data) {
-        var c = '<ul data-path="{path}">'.format(data);
+        var c = `<ul data-path="${data.path}">`;
         data.files.forEach(function (node) {
-            c += '<li data-name="{name}" data-type="{content-type}"><img src="{thumb}"><p>{name}</p></li>'.format(node);
+            c += `<li data-name="${node.name}" data-type="{$node['content-type']"><img src="${node.thumb}"><p>${node.name}</p></li>`;
         });
         c += '</ul>';
         this.el.innerHTML = c;
