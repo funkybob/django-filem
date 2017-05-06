@@ -1,3 +1,4 @@
+import time
 import zipfile
 
 from django.http import JsonResponse, Http404, HttpResponse, HttpResponseBadRequest
@@ -64,7 +65,7 @@ def dir_action(request):
     elif action == 'download':
         response = HttpResponse()
         filename = str(target.relative_to(utils.ROOT)).replace('/', '_')
-        response['Content-Disposition'] = 'attachment; filename={}_{}.zip'.format(filename,)
+        response['Content-Disposition'] = 'attachment; filename={}_{}.zip'.format(filename, int(time.time()))
         with zipfile.ZipFile(response, compression=zipfile.ZIP_DEFLATED) as zf:
             for path in target.glob('**/*'):
                 if path.is_dir():
