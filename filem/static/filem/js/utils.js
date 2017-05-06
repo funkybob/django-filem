@@ -14,17 +14,6 @@ function element(el) {
     return (typeof el == 'string') ? document.querySelector(el) : el;
 }
 
-/* implement delegated events */
-function delegate(ev, el, selector) {
-    var targets = Array.from(el.querySelectorAll(selector));
-    var tgt = ev.target;
-    while(targets.indexOf(tgt) === -1) {
-        if(tgt === el) return false;
-        tgt = tgt.parentElement;
-    }
-    return tgt;
-}
-
 /* Helpers for Fetch */
 function check_status(response) {
     if(response.status >= 200 && response.status < 300) { return response; }

@@ -4,15 +4,13 @@ function DirList(el) {
     this.open_nodes = {'': true};
 
     this.el.addEventListener('click', function (ev) {
-        var tgt = delegate(ev, this.el, 'li');
-        if(tgt === false) return;
-        this.path = tgt.dataset.path;
+        if(!ev.target.matches('li')) return false;
+        this.path = ev.target.dataset.path;
     }.bind(this));
 
     this.el.addEventListener('dblclick', function (ev) {
-        tgt = delegate(ev, this.el, 'li');
-        if(tgt === false) return;
-        var path = tgt.dataset.path;
+        if(!ev.target.matches('li')) return false;
+        var path = ev.target.dataset.path;
         if(path !== '' && (path in this.open_nodes)) {
             delete this.open_nodes[path];
         } else {
@@ -42,7 +40,7 @@ DirList.prototype = {
         var c = '';
         nodelist.forEach(function (node) {
             var is_open = node.path.startsWith(this._path);
-            c += '<li data-path="{path}"><span>{name}</span>'.format(node);
+            c += `<li data-path="${node.path}"><span>${node.name}</span>`;
             if(node.children.length > 0) {
                 c += '<ul>' + this.render_nodes(node.children) + '</ul>';
             }

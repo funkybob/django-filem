@@ -2,16 +2,14 @@ function FileList(el) {
     this.el = element(el);
 
     this.el.addEventListener('click', function (ev) {
-        var tgt = delegate(ev, this.el, 'li');
-        if(tgt === false) return;
-        var elements = Array.from(tgt.querySelectorAll('li'));
+        if(!el.target.matches('li')) return false;
+        var elements = Array.from(ev.target.querySelectorAll('li'));
         elements.forEach(function (el) { el.classList.remove('selected'); });
-        tgt.classList.add('selected');
+        ev.target.classList.add('selected');
     }.bind(this));
 
     this.el.addEventListener('dblclick', function (ev) {
-        var tgt = delegate(ev, this.el, 'li');
-        if(tgt === false) return;
+        if(!el.target.matches('li')) return false;
         this.ondblclick(ev);
     }.bind(this));
 
