@@ -16,10 +16,12 @@ function element(el) {
 
 /* Helpers for Fetch */
 function check_status(response) {
-    if(response.status >= 200 && response.status < 300) { return response; }
-    var err = new Error(response.statusText);
-    err.response = response;
-    throw err;
+    return new Promise(function (resolve, reject) {
+        if(response.status >= 200 && response.status < 300) resolve(response);
+        var err = new Error(response.statusText);
+        err.response = response;
+        reject(err);
+    });
 }
 function json (response) { return response.json(); }
 
