@@ -4,7 +4,7 @@ function FileList(el) {
     this.el.addEventListener('click', function (ev) {
         var tgt = delegate(ev, this.el, 'li');
         if(tgt === false) return;
-        var elements = Array.apply(null, tgt.querySelectorAll('li'));
+        var elements = Array.from(tgt.querySelectorAll('li'));
         elements.forEach(function (el) { el.classList.remove('selected'); });
         tgt.classList.add('selected');
     }.bind(this));

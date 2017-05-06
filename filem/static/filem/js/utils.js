@@ -16,7 +16,7 @@ function element(el) {
 
 /* implement delegated events */
 function delegate(ev, el, selector) {
-    var targets = Array.apply(null, el.querySelectorAll(selector));
+    var targets = Array.from(el.querySelectorAll(selector));
     var tgt = ev.target;
     while(targets.indexOf(tgt) === -1) {
         if(tgt === el) return false;
