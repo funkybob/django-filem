@@ -3,12 +3,12 @@ function DirList(el) {
 
     this.open_nodes = {'': true};
 
-    this.el.addEventListener('click', function (ev) {
+    this.el.addEventListener('click', (ev) => {
         if(!ev.target.matches('li')) return false;
         this.path = ev.target.dataset.path;
-    }.bind(this));
+    });
 
-    this.el.addEventListener('dblclick', function (ev) {
+    this.el.addEventListener('dblclick', (ev) => {
         if(!ev.target.matches('li')) return false;
         var path = ev.target.dataset.path;
         if(path !== '' && (path in this.open_nodes)) {
@@ -17,7 +17,7 @@ function DirList(el) {
             this.open_nodes[path] = true;
         }
         this.preen();
-    }.bind(this))
+    });
 
     return this;
 }
@@ -38,14 +38,14 @@ DirList.prototype = {
     },
     render_nodes: function(nodelist) {
         var c = '';
-        nodelist.forEach(function (node) {
+        nodelist.forEach((node) => {
             var is_open = node.path.startsWith(this._path);
             c += `<li data-path="${node.path}"><span>${node.name}</span>`;
             if(node.children.length > 0) {
                 c += '<ul>' + this.render_nodes(node.children) + '</ul>';
             }
             c += '</li>';
-        }.bind(this));
+        });
         return c;
     },
     preen: function () {

@@ -1,17 +1,17 @@
 function FileList(el) {
     this.el = element(el);
 
-    this.el.addEventListener('click', function (ev) {
+    this.el.addEventListener('click', (ev) => {
         if(!el.target.matches('li')) return false;
         var elements = Array.from(ev.target.querySelectorAll('li'));
         elements.forEach(function (el) { el.classList.remove('selected'); });
         ev.target.classList.add('selected');
-    }.bind(this));
+    });
 
-    this.el.addEventListener('dblclick', function (ev) {
+    this.el.addEventListener('dblclick', (ev) => {
         if(!el.target.matches('li')) return false;
         this.ondblclick(ev);
-    }.bind(this));
+    });
 
     return this;
 }
@@ -22,9 +22,9 @@ FileList.prototype = {
             .then(check_status)
             .then(json)
             .then(this.render.bind(this))
-            .catch(function (error) {
+            .catch((error) => {
                 this.render({path: path, files: []});
-            }.bind(this));
+            });
     },
     render: function (data) {
         var c = `<ul data-path="${data.path}">`;

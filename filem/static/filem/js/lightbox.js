@@ -2,9 +2,9 @@
 function Lightbox(el) {
     this.el = element(el);
 
-    this.el.parentElement.addEventListener('click', function (ev) {
+    this.el.parentElement.addEventListener('click', (ev) => {
         if(ev.target == this.el.parentNode) { this.hide(); }
-    }.bind(this));
+    });
 
     return this;
 }
@@ -40,9 +40,10 @@ Lightbox.prototype = {
         // build content
         this.show(`<form> <fieldset>${fields}</fieldset> <ul class="form-buttons">{buttons}</ul> </form>`);
         this.el.querySelector('input, textarea, select').focus();
-        this.el.on('click', 'button', function (ev) {
+        this.el.addEventListener('click', (ev) => {
+            if(!ev.target.matches('button')) return false;
             this.el.dispatchEvent(new CustomEvent('button', {detail: ev.currentTarget.datamap.action}));
-        }.bind(this))
+        })
     },
     hide: function () {
         var e = new Event('hide');
