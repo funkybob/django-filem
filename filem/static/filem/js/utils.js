@@ -16,7 +16,7 @@ function element(el) {
 
 /* Helpers for Fetch */
 function check_status(response) {
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
         if(response.status >= 200 && response.status < 300) resolve(response);
         var err = new Error(response.statusText);
         err.response = response;
@@ -39,9 +39,4 @@ fetch.get = function (url, data) {
         body: data,
         credentials: 'same-origin',
     })
-}
-
-/* string helper */
-String.prototype.format = function (args) {
-    return this.replace(/{([\-\w]+)}/g, function(m, key) { return args[key]; });
 }

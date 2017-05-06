@@ -1,57 +1,56 @@
-function FileList(el) {
+class FileList {
+  constructor(el) {
     this.el = element(el);
 
     this.el.addEventListener('click', (ev) => {
-        if(!el.target.matches('li')) return false;
-        var elements = Array.from(ev.target.querySelectorAll('li'));
-        elements.forEach(function (el) { el.classList.remove('selected'); });
+        if(!this.el.contains(ev.target.closest('li'))) return;
+        Array.from(ev.target.querySelectorAll('li'), (el) => el.classList.remove('selected'));
         ev.target.classList.add('selected');
     });
 
     this.el.addEventListener('dblclick', (ev) => {
-        if(!el.target.matches('li')) return false;
-        this.ondblclick(ev);
+        if(!this.el.contains(ev.target.closest('li'))) return;
+        this.ondblclick(ev, ev.target.closest('li'));
     });
+  }
 
-    return this;
-}
+  load(path) {
+    fetch.get('files/' + path)
+      .then(check_status)
+      .then(json)
+      .then(this.render.bind(this))
+      .catch((error) => {
+        this.render({path: path, files: []});
+      });
+  }
 
-FileList.prototype = {
-    load: function (path) {
-        fetch.get('files/' + path)
-            .then(check_status)
-            .then(json)
-            .then(this.render.bind(this))
-            .catch((error) => {
-                this.render({path: path, files: []});
-            });
-    },
-    render: function (data) {
-        var c = `<ul data-path="${data.path}">`;
-        data.files.forEach(function (node) {
-            c += `<li data-name="${node.name}" data-type="{$node['content-type']"><img src="${node.thumb}"><p>${node.name}</p></li>`;
-        });
-        c += '</ul>';
-        this.el.innerHTML = c;
-    },
-    ondblclick: function (ev) {
-        var path = ev.currentTarget.firstChild.dataset.path + '/' + ev.target.parentElement.dataset.name,
-            ctype = ev.target.parentElement.dataset.type;
+  render(data) {
+    var c = `<ul data-path="${data.path}">`;
+    data.files.forEach((node) => {
+      c += `<li data-name="${node.name}" data-type="${node['content-type']}"><img src="${node.thumb}"><p>${node.name}</p></li>`;
+    });
+    c += '</ul>';
+    this.el.innerHTML = c;
+  }
 
-        if(ctype == 'inode/directory') {
-            this.el.dispatchEvent(new CustomEvent('setpath', {detail: path}));
-        }
-        else if(ctype.startsWith('image/')) {
-            lb.show('<div class="lb-image"><img src="/media/' + path + '"></div>');
-        }
-        else if(ctype.startsWith('text/')) {
-            lb.show_spinner();
-            fetch.get('/media/' + path)
-                .then(check_status)
-                .then(function (resp) { return resp.text(); })
-                .then(function (text) {
-                    lb.set_content('<pre>' + text + '</pre>');
-                });
-        }
+  ondblclick(ev) {
+    var path = ev.currentTarget.firstChild.dataset.path + '/' + ev.target.parentElement.dataset.name,
+        ctype = ev.target.parentElement.dataset.type;
+    if(ctype == 'inode/directory') {
+      this.el.dispatchEvent(new CustomEvent('setpath', {detail: path}));
     }
-};
+    else if(ctype.startsWith('image/')) {
+      lb.show('<div class="lb-image"><img src="/media/' + path + '"></div>');
+    }
+    else if(ctype.startsWith('text/')) {
+      lb.show_spinner();
+      fetch.get('/media/' + path)
+        .then(check_status)
+        .then((resp) => resp.text())
+        .then((text) => {
+          lb.set_content('<pre>' + text + '</pre>');
+        });
+    }
+  }
+
+}
