@@ -10,15 +10,19 @@ from easy_thumbnails.files import Thumbnailer
 ROOT = Path(settings.MEDIA_ROOT).resolve()
 
 
-def safe_join(root, path):
+def safe_join(root, path, strict=False):
     '''
     Safely join two paths, and resolve as an absolute, ensuring the result is
     still under the root.
+
+    Raises ValueError if resulting path is not under root.
+    If strict = True, raises FileNotFoundError if root or the resulting path do
+    not exist.
     '''
-    p_root = Path(root).resolve()
+    p_root = Path(root).resolve(strict=strict)
     p_path = PurePath(path)
 
-    p_full = (p_root / p_path).resolve()
+    p_full = (p_root / p_path).resolve(strict=strict)
     p_full.relative_to(p_root)
     return p_full
 
